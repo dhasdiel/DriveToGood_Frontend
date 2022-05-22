@@ -14,6 +14,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Button, Container, Divider } from "@mui/material";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+
+import "./RideItem.css";
 
 const DUNB_RIDES = [
   {
@@ -44,7 +48,13 @@ export default function RideItem() {
   };
 
   return (
-    <Card sx={{ maxWidth: 800 }}>
+    <Card
+      sx={{
+        maxWidth: 800,
+        boxShadow: "rgba(0, 0, 0, 0.15) 0px 5px 15px 0px",
+        borderRadius: "15px",
+      }}
+    >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -65,6 +75,7 @@ export default function RideItem() {
         image="/static/images/cards/paella.jpg"
         alt="Paella dish"
       /> */}
+      <Divider />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           This impressive paella is a perfect party dish
@@ -116,6 +127,15 @@ export default function RideItem() {
             serve.
           </Typography>
         </CardContent>
+        <Button
+          className="button-42"
+          color={"secondary"}
+          size="large"
+          variant="contained"
+          endIcon={<DirectionsCarIcon />}
+        >
+          Start
+        </Button>
       </Collapse>
     </Card>
   );

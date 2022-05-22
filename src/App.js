@@ -6,7 +6,7 @@ import { theme } from "./style/theme";
 
 import BottomAppBar from "./components/BottomAppBar";
 import UpAppBar from "./components/UpAppBar";
-import Rides from "./components/Rides/Rides";
+import Rides from "./components/rides/Rides";
 
 function App() {
   return (
