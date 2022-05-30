@@ -50,7 +50,7 @@ export default function RideItem() {
   return (
     <Card
       sx={{
-        maxWidth: 800,
+        // maxWidth: 800,
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 5px 15px 0px",
         borderRadius: "15px",
       }}
