@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import {signUP} from "../../services/index"
+
 function Copyright(props) {
   return (
     <Typography
@@ -33,10 +35,19 @@ function Copyright(props) {
 export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
+    let data = new FormData(event.currentTarget);
+    data = {
+      username : data.get("username"),
+      full_name : data.get("full_name"),
       email: data.get("email"),
       password: data.get("password"),
+    };
+    console.log(data);
+    signUP(data).then((res) => {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.error(error);
     });
   };
 
@@ -62,11 +73,11 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="username"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="username"
+                label="username"
                 autoFocus
               />
             </Grid>
@@ -74,10 +85,10 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
+                id="full_name"
+                label="full name"
+                name="full_name"
+                autoComplete="fullname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -118,7 +129,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

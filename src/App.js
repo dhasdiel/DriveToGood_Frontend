@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./style/theme";
-
 import BottomAppBar from "./components/BottomAppBar";
 import UpAppBar from "./components/UpAppBar";
 import Rides from "./components/rides/Rides";
@@ -27,14 +24,14 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       {isSigned && (
         <>
           <UpAppBar /> <Rides /> <BottomAppBar />
         </>
       )}
       {!isSigned && <SignIn />}
-    </ThemeProvider>
+    </>
   );
 }
 

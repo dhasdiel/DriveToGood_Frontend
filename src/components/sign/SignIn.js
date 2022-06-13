@@ -14,7 +14,6 @@ import Container from "@mui/material/Container";
 import { Alert } from "@mui/material";
 
 import {signIN} from "../../services/index" 
-import App from "../../App"
 
 function Copyright(props) {
   return (
@@ -51,6 +50,8 @@ export default function SignIn() {
       localStorage.setItem("JWT", res.data.access_token);
       setIsSucceed(true);
       // TODO: link to home page
+      // better method should be used :(
+      window.location.href = window.location.href
     })
     .catch((error) => {
       console.error(error);
