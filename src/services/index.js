@@ -60,7 +60,7 @@ export const POSTdrive = (drive) => {
   axios.post(BASEURL + DRIVE + "create", drive, authorize);
 };
 
-export const GETdrives = (longitude, latitude, skip, limit) => {
+export const GETdrives = (longitude, latitude, skip = 0, limit = 5) => {
   const authorize = authorization();
 
   axios.get(
