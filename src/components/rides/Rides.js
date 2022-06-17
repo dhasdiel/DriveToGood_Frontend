@@ -4,7 +4,6 @@ import RideItem from "./RideItem";
 import { Box } from "@mui/system";
 
 import { GETdrives } from "../../services/index";
-
 /**
  we need to fetch data. a single ride looks like this:
  
@@ -42,10 +41,18 @@ const Rides = (props) => {
       function(position) {
         console.log("Latitude is :", position.coords.latitude);
         console.log("Longitude is :", position.coords.longitude);
-        GETdrives(position.coords.longitude, position.coords.latitude,)
+        GETdrives(position.coords.longitude, position.coords.latitude)
+          .then((res) => {
+            console.log(res.data);
+            setData(res.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       },
       function(error) {
         console.error("Error Code = " + error.code + " - " + error.message);
+        alert("You have to provide and share location");
       }
     );
   }, []);
@@ -53,9 +60,18 @@ const Rides = (props) => {
   return (
     <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
-        <Grid item xs={12} md={6} lg={4}>
-          <RideItem />
-        </Grid>
+        {data.map(({ body, header, id_user, location, to, ver, _id }) => (
+          <Grid item xs={12} md={6} lg={4} key={_id}>
+            <RideItem
+              location={location}
+              locationTo={to}
+              header={header}
+              ver={ver}
+              body={body}
+            />
+          </Grid>
+        ))}
+
         <Grid item xs={12} md={6} lg={4}>
           <RideItem />
         </Grid>

@@ -63,8 +63,8 @@ export const POSTdrive = (drive) => {
 export const GETdrives = (longitude, latitude, skip = 0, limit = 5) => {
   const authorize = authorization();
 
-  axios.get(
-    `${BASEURL}${DRIVE}drives?longitude=${longitude}&latitude=${latitude}&skip=${skip}%limit=${limit}`,
+  return axios.get(
+    `${BASEURL}${DRIVE}drives?longitude=${longitude}&latitude=${latitude}&skip=${skip}&limit=${limit}`,
     authorize
   );
 };
