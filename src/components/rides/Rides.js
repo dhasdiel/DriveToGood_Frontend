@@ -4,6 +4,7 @@ import RideItem from "./RideItem";
 import { Box } from "@mui/system";
 
 import { GETdrives } from "../../services/index";
+
 /**
  we need to fetch data. a single ride looks like this:
  
@@ -60,7 +61,7 @@ const Rides = (props) => {
   return (
     <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
-        {data.map(({ body, header, id_user, location, to, ver, _id }) => (
+        {data.map(({date, body, header, id_user, location, to, ver, _id, city, dst_city  }) => (
           <Grid item xs={12} md={6} lg={4} key={_id}>
             <RideItem
               location={location}
@@ -68,19 +69,12 @@ const Rides = (props) => {
               header={header}
               ver={ver}
               body={body}
+              city={city}
+              dstCity={dst_city}
+              time={date}
             />
           </Grid>
         ))}
-
-        <Grid item xs={12} md={6} lg={4}>
-          <RideItem />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <RideItem />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <RideItem />
-        </Grid>
       </Grid>
     </Box>
   );

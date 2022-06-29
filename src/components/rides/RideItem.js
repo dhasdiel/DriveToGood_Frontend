@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
@@ -14,21 +13,22 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button, Container, Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import "./RideItem.css";
-import { reverseGeoCode } from "../../services/3rdparty";
 
-const DUNB_RIDES = [
-  {
-    id: 1,
-    from: "Tel-Aviv",
-    to: "Shiba Hospiatl",
-    title: "I'll be in the neighbourhood this week. Let's grab a bite to eat",
-    person: "/static/images/avatar/5.jpg",
-  },
-];
+
+
+// const DUNB_RIDES = [
+//   {
+//     id: 1,
+//     from: "Tel-Aviv",
+//     to: "Shiba Hospiatl",
+//     title: "I'll be in the neighbourhood this week. Let's grab a bite to eat",
+//     person: "/static/images/avatar/5.jpg",
+//   },
+// ];
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -41,15 +41,19 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RideItem({city, dstCity, header, ver, body}){
+export default function RideItem({
+  time,
+  city,
+  dstCity,
+  location,
+  locationTo,
+  header,
+  ver,
+  body,
+}) {
   const [expanded, setExpanded] = React.useState(false);
-  const [data, setDate] = React.useState("");
 
-
-
-  React.useEffect(()=>{
-    setDate(new Date().toLocaleString());
-  }, [])
+  React.useEffect(() => {}, []);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -74,8 +78,8 @@ export default function RideItem({city, dstCity, header, ver, body}){
             <MoreVertIcon />
           </IconButton>
         }
-        title="Tel-Aviv => Shiba Hospiatl"
-        subheader={data}
+        title={`${city} => ${dstCity}`}
+        subheader={time}
       />
       {/* <CardMedia
         component="img"
@@ -108,14 +112,7 @@ export default function RideItem({city, dstCity, header, ver, body}){
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
-            set aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-            {body}
-          </Typography>
-
+          <Typography paragraph>{body}</Typography>
         </CardContent>
         <Button
           className="button-42"

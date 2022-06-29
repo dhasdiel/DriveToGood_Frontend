@@ -6,9 +6,11 @@ import Rides from "./components/rides/Rides";
 
 import { isSigned as userSigned } from "./services/index";
 import SignIn from "./components/sign/SignIn";
+import NewRide from "./components/rides/NewRide";
 
-function App() {
+function App(props) {
   const [isSigned, setIsSigned] = useState(false);
+  const [username, setUserName] = useState("");
 
   // Check in first render if user is signed
   useEffect(() => {
@@ -16,6 +18,7 @@ function App() {
       .then((res) => {
         console.log(res.data);
         setIsSigned(true);
+        setUserName(res.data.full_name);
       })
       .catch((error) => {
         console.error(error);
@@ -27,7 +30,9 @@ function App() {
     <>
       {isSigned && (
         <>
-          <UpAppBar /> <Rides /> <BottomAppBar />
+          <UpAppBar username={username} />
+          {props.new ? <NewRide /> : <Rides />}
+          <BottomAppBar />
         </>
       )}
       {!isSigned && <SignIn />}
