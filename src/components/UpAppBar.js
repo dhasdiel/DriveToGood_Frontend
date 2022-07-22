@@ -11,10 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "@mui/material";
+
 
 import stringAvatar from "../utility/avatar";
 
+import "../style/a.css"
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -48,7 +49,7 @@ const UpAppBar = ({username}) => {
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             href="/"
@@ -63,7 +64,7 @@ const UpAppBar = ({username}) => {
             }}
           >
             DvTOgd
-          </Typography>
+          </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -101,7 +102,7 @@ const UpAppBar = ({username}) => {
               ))}
             </Menu>
           </Box>
-          <Link href="/">
+            
           <Typography
             sx={{
               mr: 2,
@@ -113,10 +114,11 @@ const UpAppBar = ({username}) => {
               color: "inherit",
               textDecoration: "none",
             }}
-          >
+          ><a href="/" className="link">
             DvToGd
+            </a>
           </Typography>
-          </Link>
+          
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
