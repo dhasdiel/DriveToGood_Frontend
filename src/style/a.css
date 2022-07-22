@@ -1,0 +1,11 @@
+a {
+    color: #f0f0f0;
+  }
+  
+  a:link,
+  a:visited,
+  a:focus {
+    background: inherit;
+    text-decoration: none;
+  }
+  
