@@ -4,20 +4,14 @@
 
 import Joi from "joi";
 
-const DriveTypes = [
-  "Transporting Patient",
-  "Hospital",
-  "Food Distribution",
-  "Roadside Assistance",
-  "transportation Of Medical Equipment",
-];
-// @remember: lon first
+import { DriveTypes } from "../const";
+// FIXME: lon first
 export const GeoJSON_Point = Joi.object()
   .keys({
     type: Joi.string()
       .required()
-      .valid(["Point"]),
-    coordinates: Joi.array().ordered([
+      .valid("Point"),
+    coordinates: Joi.array().ordered(
       Joi.number()
         .min(-180)
         .max(180)
@@ -26,9 +20,11 @@ export const GeoJSON_Point = Joi.object()
         .min(-90)
         .max(90)
         .required(),
-    ]),
+    ),
   })
   .description("Please use this format [ longitude, latitude]");
+
+export const query = Joi.string().alphanum().min(5).required().label("query");
 
 export const newDrive = Joi.object({
   driveType: Joi.string()

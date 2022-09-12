@@ -1,23 +1,21 @@
 /**HERE WE PLACE ALL THE FUNCTIONS FOR THE COMMUNICATIONS WITH THE BACKEND */
+import { default as axios } from "axios";
 
-import axios from "axios";
-
-// TODO: CHANGE IN PRODUCTION
-const BASEURL = "http://localhost:8000/";
+import { BASEURL } from "../config";
 
 const authorization = () => {
   // NOT GOOD FOR PRODUCTION! should'nt be saved in local storage
-  let JWTSTR = localStorage.getItem("JWT");
+  let JWT = localStorage.getItem("JWT");
 
   // TODO: delete it:
-  if (JWTSTR === null) JWTSTR = "aaaaaaa";
+  if (JWT === null) JWT = "aaaaaaa";
 
-  const configAuthorzeied = {
+  const configAuthorization = {
     headers: {
-      Authorization: "Bearer " + JWTSTR,
+      Authorization: "Bearer " + JWT,
     },
   };
-  return configAuthorzeied;
+  return configAuthorization;
 };
 
 /**User - End Points
@@ -45,7 +43,7 @@ export const signIN = (namePass) => {
   };
 
   // should return JWT token, best for it to be saved in memory.
-  // the return should be found in the headers (bearer scheme)
+  // the return should be found in the headers (bearer schema)
   return axios.post(BASEURL + USER + "token", formData, config);
 };
 
@@ -56,11 +54,10 @@ const DRIVE = "drive/";
 
 export const POSTdrive = (drive) => {
   const authorize = authorization();
-
-  axios.post(BASEURL + DRIVE + "create", drive, authorize);
+  return axios.post(BASEURL + DRIVE + "create", drive, authorize);
 };
 
-export const GETdrives = (longitude, latitude, skip = 0, limit = 5) => {
+export const GETdrives = (longitude, latitude, skip = 0, limit = 1) => {
   const authorize = authorization();
 
   return axios.get(

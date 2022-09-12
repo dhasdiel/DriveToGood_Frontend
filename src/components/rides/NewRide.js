@@ -1,3 +1,4 @@
+import React, { useState, useContext, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -6,28 +7,55 @@ import {
   Divider,
   Button,
 } from "@mui/material";
-import React, { useState, useContext } from "react";
+
+import { POSTdrive } from "../../services";
+import { forwardGeoCode } from "../../services/3rdparty.js";
+
+import { DriveTypes } from "../../const";
 
 import "./NewRide.css";
 
-const DriveTypes = [
-  "Transporting Patient",
-  "Hospital",
-  "Food Distribution",
-  "Roadside Assistance",
-  "transportation Of Medical Equipment",
-];
+// TODO should return lon lat OR empty object in case of validation error
+const normalize = (query) => {
+  return forwardGeoCode(query)
+}
 
 export default function NewRide() {
   const [driveType, setDriveType] = useState("Transporting Patient");
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
   const [locationInput, setLocationInput] = useState("");
+  const [destination, setDestination] = useState("");
+  const [submit, setSubmit] = useState(false);
+
+  const handleRequest = async (obj) => {
+    try {
+      const res = await POSTdrive(obj);
+      setSubmit(true);
+      console.log(res);
+    } catch (error) {
+      setSubmit(false);
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // normalize location and destination as classic lat lon mongo object
+    const normLocation = normalize(locationInput)
+    const normDestination = normalize(destination)
+    // const isValid = handleValidation()
+    handleRequest({ driveType, header, body, normLocation, normDestination });
+  };
+
+  useEffect(() => {}, [submit]);
 
   return (
     <div className="warper">
       <Box
         component="form"
+        onSubmit={handleSubmit}
         sx={{
           width: "98vw",
           backgroundColor: "#efefef",
@@ -94,10 +122,21 @@ export default function NewRide() {
         <div className="warper">
           <TextField
             value={locationInput}
-            onChange = {e => setLocationInput(e.target.value)}
+            onChange={(e) => setLocationInput(e.target.value)}
             id="location"
             label="location"
             helperText="If not given, it uses your default location"
+          />
+        </div>
+
+        <div className="warper">
+          <TextField
+            sx={{ width: "250px" }}
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            id="destination"
+            label="destination"
+            helperText="enter city"
           />
         </div>
 

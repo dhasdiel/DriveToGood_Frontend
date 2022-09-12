@@ -11,14 +11,10 @@ import NewRide from "./components/rides/NewRide";
 import locationContext from "./global";
 
 function App(props) {
-
-
   const [isSigned, setIsSigned] = useState(false);
   const [username, setUserName] = useState("");
-  const [location, setLocation] = useState([0,0])
-  const value = useMemo(() => ({location, setLocation}), [location])
-
-
+  const [location, setLocation] = useState([0, 0]);
+  const value = useMemo(() => ({ location, setLocation }), [location]);
 
   // Check in first render if user is signed
   useEffect(() => {
