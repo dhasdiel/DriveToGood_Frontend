@@ -14,11 +14,48 @@ import { forwardGeoCode } from "../../services/3rdparty.js";
 import { DriveTypes } from "../../const";
 
 import "./NewRide.css";
+import { getLatLon } from "../../logic/geoCoding";
 
 // TODO should return lon lat OR empty object in case of validation error
-const normalize = (query) => {
-  return forwardGeoCode(query)
-}
+const normalize = async (query) => {
+  try {
+    const response = await forwardGeoCode(query);
+    const { latitude, longitude } = getLatLon(response.data.data);
+    return [latitude, longitude];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 
+ * @param {*} location  {
+      "latitude": 31.759595,
+      "longitude": 35.215315,
+      "type": "locality",
+      "name": "Jerusalem",
+      "number": null,
+      "postal_code": null,
+      "street": null,
+      "confidence": 0.6,
+      "region": "Jerusalem",
+      "region_code": "JM",
+      "county": "Jerusalem",
+      "locality": "Jerusalem",
+      "administrative_area": null,
+      "neighbourhood": null,
+      "country": "Israel",
+      "country_code": "ISR",
+      "continent": "Asia",
+      "label": "Jerusalem, Israel"
+    },
+ * @returns 
+ */
+const extractLocation = (location) => {
+  const { latitude, longitude } = location;
+  console.log(latitude, longitude);
+  return latitude, longitude;
+};
 
 export default function NewRide() {
   const [driveType, setDriveType] = useState("Transporting Patient");
@@ -39,12 +76,19 @@ export default function NewRide() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // normalize location and destination as classic lat lon mongo object
-    const normLocation = normalize(locationInput)
-    const normDestination = normalize(destination)
+    // use userLocation
+    if (locationInput) {
+
+    } else {
+      setLocationInput("DON'T CHECK")
+    }
+
+    const normLocation = await normalize(locationInput);
+    const normDestination = await normalize(destination);
+    console.log(normLocation);
     // const isValid = handleValidation()
     handleRequest({ driveType, header, body, normLocation, normDestination });
   };

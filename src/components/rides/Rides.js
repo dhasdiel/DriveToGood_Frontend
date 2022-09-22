@@ -44,6 +44,8 @@ const Rides = (props) => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function(position) {
+        localStorage.setItem('longitude', position.coords.longitude)
+        localStorage.setItem('latitude', position.coords.latitude)
         setLocation([position.coords.longitude, position.coords.latitude]);
         GETdrives(position.coords.longitude, position.coords.latitude)
           .then((res) => {

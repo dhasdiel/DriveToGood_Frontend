@@ -24,7 +24,7 @@ export const GeoJSON_Point = Joi.object()
   })
   .description("Please use this format [ longitude, latitude]");
 
-export const query = Joi.string().alphanum().min(5).required().label("query");
+export const query = Joi.string().min(3).required().label("query");
 
 export const newDrive = Joi.object({
   driveType: Joi.string()
