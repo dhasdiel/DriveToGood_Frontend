@@ -12,7 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import {signUP} from "../../services/index"
+import { signUP } from "../../services/index";
+import { Alert } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -32,23 +33,38 @@ function Copyright(props) {
   );
 }
 
+const parseError = (error) => {
+  const responseText = JSON.parse(error.request.responseText);
+  console.log(responseText)
+  if (Array.isArray(responseText.detail)) {
+    return { msg: responseText.detail[0].msg, type: responseText.detail[0].type };
+  }
+  return {msg: responseText.detail}
+};
+
 export default function SignUp() {
+  const [isError, setIsError] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState("");
+
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
-      username : data.get("username"),
-      full_name : data.get("full_name"),
+      username: data.get("username"),
+      full_name: data.get("full_name"),
       email: data.get("email"),
       password: data.get("password"),
     };
     console.log(data);
-    signUP(data).then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    signUP(data)
+      .then((res) => {
+        console.log(res.data);
+        setIsError(false);
+      })
+      .catch((error) => {
+        setIsError(true);
+        setErrMsg( parseError(error).msg);
+      });
   };
 
   return (
@@ -135,6 +151,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </Box>
+        {isError && <Alert severity="error">{errMsg}</Alert>}
       </Box>
       <Copyright sx={{ mt: 5 }} />
     </Container>

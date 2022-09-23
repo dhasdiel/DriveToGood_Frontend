@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Grid from "@mui/material/Grid";
 import RideItem from "./RideItem";
 import { Box } from "@mui/system";
 
-import { GETdrives } from "../../services/index";
+import { GETdrives } from "../../services";
+
+import contextLocation from "../../global";
 
 /**
  we need to fetch data. a single ride looks like this:
@@ -37,14 +39,16 @@ import { GETdrives } from "../../services/index";
 const Rides = (props) => {
   const [data, setData] = useState([]);
 
+  const { location, setLocation } = useContext(contextLocation);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function(position) {
-        console.log("Latitude is :", position.coords.latitude);
-        console.log("Longitude is :", position.coords.longitude);
+        localStorage.setItem('longitude', position.coords.longitude)
+        localStorage.setItem('latitude', position.coords.latitude)
+        setLocation([position.coords.longitude, position.coords.latitude]);
         GETdrives(position.coords.longitude, position.coords.latitude)
           .then((res) => {
-            console.log(res.data);
             setData(res.data);
           })
           .catch((error) => {
@@ -59,22 +63,35 @@ const Rides = (props) => {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>
+    <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>{console.log(location)}
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
-        {data.map(({date, body, header, id_user, location, to, ver, _id, city, dst_city  }) => (
-          <Grid item xs={12} md={6} lg={4} key={_id}>
-            <RideItem
-              location={location}
-              locationTo={to}
-              header={header}
-              ver={ver}
-              body={body}
-              city={city}
-              dstCity={dst_city}
-              time={date}
-            />
-          </Grid>
-        ))}
+        {data.map(
+          ({
+            date,
+            body,
+            header,
+            id_user,
+            location,
+            to,
+            ver,
+            _id,
+            city,
+            dst_city,
+          }) => (
+            <Grid item xs={12} md={6} lg={4} key={_id}>
+              <RideItem
+                location={location}
+                locationTo={to}
+                header={header}
+                ver={ver}
+                body={body}
+                city={city}
+                dstCity={dst_city}
+                time={date}
+              />
+            </Grid>
+          )
+        )}
       </Grid>
     </Box>
   );

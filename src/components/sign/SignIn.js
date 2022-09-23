@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Alert } from "@mui/material";
 
-import {signIN} from "../../services/index" 
+import { signIN } from "../../services/index";
 
 function Copyright(props) {
   return (
@@ -34,7 +34,7 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
-    const [isSucceed, setIsSucceed] = React.useState("a")
+  const [isSucceed, setIsSucceed] = React.useState("a");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,27 +45,26 @@ export default function SignIn() {
       password: data.get("password"),
     };
     signIN(data)
-    .then((res) => {
-      console.log(res.data);
-      localStorage.setItem("JWT", res.data.access_token);
-      setIsSucceed(true);
-      // TODO: link to home page
-      // better method should be used :(
-      window.location.href = window.location.href
-    })
-    .catch((error) => {
-      console.error(error);
-      setIsSucceed(false);
-
-    });
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("JWT", res.data.access_token);
+        setIsSucceed(true);
+        // TODO: link to home page
+        // better method should be used :(
+        window.location.href = window.location.href;
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsSucceed(false);
+      });
   };
 
-//   React.useEffect(()=>{
-//     const id = setInterval(() => {
-//       setIsFinished(false)
-//       clearInterval(id)
-//     }, 5000);
-//   },[isSucceed])
+  //   React.useEffect(()=>{
+  //     const id = setInterval(() => {
+  //       setIsFinished(false)
+  //       clearInterval(id)
+  //     }, 5000);
+  //   },[isSucceed])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -132,9 +131,8 @@ export default function SignIn() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-      {(isSucceed === true) && <Alert severity="success">Wellcome</Alert>}
-      {(isSucceed === false) && <Alert severity="error">failled</Alert>}
+      {isSucceed === true && <Alert severity="success">Welcome</Alert>}
+      {isSucceed === false && <Alert severity="error">failed</Alert>}
     </Container>
-   
   );
 }
