@@ -61,7 +61,7 @@ export default function NewRide() {
   const [driveType, setDriveType] = useState("Transporting Patient");
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
-  const [locationInput, setLocationInput] = useState("");
+  const [location, setLocation] = useState("");
   const [destination, setDestination] = useState("");
   const [submit, setSubmit] = useState(false);
 
@@ -80,13 +80,13 @@ export default function NewRide() {
     event.preventDefault();
 
     // use userLocation
-    if (locationInput) {
+    if (location) {
 
     } else {
-      setLocationInput("DON'T CHECK")
+      setLocation("DON'T CHECK")
     }
 
-    const normLocation = await normalize(locationInput);
+    const normLocation = await normalize(location);
     const normDestination = await normalize(destination);
     console.log(normLocation);
     // const isValid = handleValidation()
@@ -165,8 +165,8 @@ export default function NewRide() {
 
         <div className="warper">
           <TextField
-            value={locationInput}
-            onChange={(e) => setLocationInput(e.target.value)}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             id="location"
             label="location"
             helperText="If not given, it uses your default location"
