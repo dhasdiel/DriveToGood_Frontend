@@ -18,18 +18,6 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import "./RideItem.css";
 
-
-
-// const DUNB_RIDES = [
-//   {
-//     id: 1,
-//     from: "Tel-Aviv",
-//     to: "Shiba Hospiatl",
-//     title: "I'll be in the neighbourhood this week. Let's grab a bite to eat",
-//     person: "/static/images/avatar/5.jpg",
-//   },
-// ];
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -41,19 +29,26 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+/**
+ * location
+                destination={destination}
+                header={header}
+                ver={ver}
+                body={body}
+                timePublished={date}
+ * @param {*} param0 
+ * @returns 
+ */
+
 export default function RideItem({
-  time,
-  city,
-  dstCity,
   location,
-  locationTo,
+  destination,
   header,
   ver,
   body,
+  timePublished,
 }) {
   const [expanded, setExpanded] = React.useState(false);
-
-  React.useEffect(() => {}, []);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -78,15 +73,9 @@ export default function RideItem({
             <MoreVertIcon />
           </IconButton>
         }
-        title={`${city} => ${dstCity}`}
-        subheader={time}
+        title={`${location} => ${destination}`}
+        subheader={timePublished}
       />
-      {/* <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      /> */}
       <Divider />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
