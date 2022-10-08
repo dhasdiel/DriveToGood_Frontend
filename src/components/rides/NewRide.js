@@ -6,6 +6,7 @@ import {
   MenuItem,
   Divider,
   Button,
+  Alert,
 } from "@mui/material";
 
 import { POSTdrive } from "../../services";
@@ -17,11 +18,21 @@ import "./NewRide.css";
 import { getLatLon } from "../../logic/geoCoding";
 
 // TODO should return lon lat OR empty object in case of validation error
+
+const buildGeoJson = (data) => {
+  console.log([data[0].longitude, data[0].latitude]);
+  return {
+    type: "Point",
+    coordinates: [data[0].longitude, data[0].latitude],
+  };
+};
+
 const normalize = async (query) => {
   try {
-    const response = await forwardGeoCode(query);
-    const { latitude, longitude } = getLatLon(response.data.data);
-    return [latitude, longitude];
+    const { data } = await forwardGeoCode(query);
+    console.log(data);
+    // const { latitude, longitude } = getLatLon(data.data);
+    return buildGeoJson(data.data);
   } catch (error) {
     console.error(error);
   }
@@ -58,7 +69,7 @@ const extractLocation = (location) => {
 };
 
 export default function NewRide() {
-  const [driveType, setDriveType] = useState("Transporting Patient");
+  const [driveType, setDriveType] = useState("transporting_patient");
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
   const [location, setLocation] = useState("");
@@ -79,24 +90,35 @@ export default function NewRide() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // use userLocation
+    // todo: use userLocation
     if (location) {
-
     } else {
-      setLocation("DON'T CHECK")
+      setLocation("DON'T CHECK");
     }
 
     const normLocation = await normalize(location);
     const normDestination = await normalize(destination);
     console.log(normLocation);
     // const isValid = handleValidation()
-    handleRequest({ driveType, header, body, normLocation, normDestination });
+    handleRequest({
+      ver: driveType,
+      header: header,
+      body: body,
+      location: normLocation,
+      destination: normDestination,
+    });
   };
 
   useEffect(() => {}, [submit]);
 
+const submitted = (
+<>
+<Alert severity="success">Created successfully</Alert>
+</>)
+
   return (
     <div className="warper">
+   
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -108,6 +130,7 @@ export default function NewRide() {
           borderRadius: "10px",
         }}
       >
+       {submit && submitted}
         <div className="warper">
           <Typography sx={{ m: 2, display: "block" }} variant="h5">
             New Drive
