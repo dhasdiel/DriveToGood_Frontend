@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 
 import { GETdrives } from "../../services";
 
-const Rides = (props) => {
+const Rides = () => {
   const [data, setData] = useState([]);
 
   const fetchDrives = (position) => {
@@ -35,7 +35,10 @@ const Rides = (props) => {
     <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
         {data.map(
-          ({ date, body, header, location, destination, ver }, index) => (
+          (
+            { date, body, header, location, destination, ver, id_user },
+            index
+          ) => (
             <Grid item xs={12} md={6} lg={4} key={index}>
               <RideItem
                 location={location}
@@ -44,6 +47,7 @@ const Rides = (props) => {
                 ver={ver}
                 body={body}
                 timePublished={date}
+                id={id_user}
               />
             </Grid>
           )

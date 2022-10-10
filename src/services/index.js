@@ -47,6 +47,10 @@ export const signIN = (namePass) => {
   return axios.post(BASEURL + USER + "token", formData, config);
 };
 
+export const getUsername = (id) => {
+  return axios.get(BASEURL + USER + id);
+};
+
 /**Drive - End Points:
  * -------------------------------------------------------------------
  */

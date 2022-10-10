@@ -90,7 +90,7 @@ export default function NewRide() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // todo: use userLocation
+    // TODO: use userLocation
     if (location) {
     } else {
       setLocation("DON'T CHECK");
@@ -111,14 +111,8 @@ export default function NewRide() {
 
   useEffect(() => {}, [submit]);
 
-const submitted = (
-<>
-<Alert severity="success">Created successfully</Alert>
-</>)
-
   return (
     <div className="warper">
-   
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -130,7 +124,7 @@ const submitted = (
           borderRadius: "10px",
         }}
       >
-       {submit && submitted}
+        {submit && <Alert severity="success">Created successfully</Alert>}
         <div className="warper">
           <Typography sx={{ m: 2, display: "block" }} variant="h5">
             New Drive

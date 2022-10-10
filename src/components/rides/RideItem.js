@@ -8,7 +8,6 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -17,6 +16,9 @@ import { Button, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import "./RideItem.css";
+import { reverseGeoCode } from "../../services/3rdparty";
+import stringAvatar from "../../utility/avatar";
+import { getUsername } from "../../services";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,15 +32,18 @@ const ExpandMore = styled((props) => {
 }));
 
 /**
- * location
-                destination={destination}
-                header={header}
-                ver={ver}
-                body={body}
-                timePublished={date}
- * @param {*} param0 
- * @returns 
+ *
+ * * TODO: need much stronger algorithm for querying the city name. now its about REGION so
+ * for example asking for Ramat Gan will result in Tel Aviv.
  */
+const getCityName = async (location) => {
+  try {
+    const { data } = await reverseGeoCode(location);
+    return data.data[0].region;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export default function RideItem({
   location,
@@ -47,12 +52,35 @@ export default function RideItem({
   ver,
   body,
   timePublished,
+  id,
 }) {
   const [expanded, setExpanded] = React.useState(false);
+  const [cityLoc, setCityLoc] = React.useState("");
+  const [cityDst, setCityDst] = React.useState("");
+  const [username, setUsername] = React.useState(
+    "If you delete this shit it wont work!!!"
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  React.useEffect(() => {
+    getCityName(location)
+      .then((city) => setCityLoc(city))
+      .catch((error) => console.error(error));
+
+    getCityName(destination)
+      .then((city) => setCityDst(city))
+      .catch((error) => console.error(error));
+  }, []);
+
+  React.useEffect(() => {
+    getUsername(id)
+      .then((response) => response.data)
+      .then((data) => setUsername(data.full_name))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <Card
@@ -63,17 +91,13 @@ export default function RideItem({
       }}
     >
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        avatar={<Avatar {...stringAvatar(username)} alt="Remy Sharp" />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={`${location} => ${destination}`}
+        title={`${cityLoc} => ${cityDst}`}
         subheader={timePublished}
       />
       <Divider />
