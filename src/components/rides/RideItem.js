@@ -16,9 +16,11 @@ import { Button, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import "./RideItem.css";
+
 import { reverseGeoCode } from "../../services/3rdparty";
 import stringAvatar from "../../utility/avatar";
 import { getUsername } from "../../services";
+
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -45,6 +47,7 @@ const getCityName = async (location) => {
   }
 };
 
+
 export default function RideItem({
   location,
   destination,
@@ -52,6 +55,7 @@ export default function RideItem({
   ver,
   body,
   timePublished,
+
   id,
 }) {
   const [expanded, setExpanded] = React.useState(false);
