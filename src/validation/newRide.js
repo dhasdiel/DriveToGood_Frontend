@@ -4,7 +4,7 @@
 
 import Joi from "joi";
 
-import { DriveTypes } from "../const";
+import {DriveTypes} from "../const";
 // FIXME: lon first
 export const GeoJSON_Point = Joi.object()
   .keys({
