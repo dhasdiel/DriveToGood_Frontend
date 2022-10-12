@@ -37,7 +37,7 @@ const Rides = () => {
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
         {data.map(
           (
-            { date, body, header, location, destination, ver, id_user },
+            { date, body, header, location, destination, ver, id_user, _id, roomID },
             index
           ) => (
             <Grid item xs={12} md={6} lg={4} key={index}>
@@ -49,6 +49,8 @@ const Rides = () => {
                 body={body}
                 timePublished={date}
                 id={id_user}
+                driveID={_id}
+                roomID={roomID}
               />
             </Grid>
           )

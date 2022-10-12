@@ -14,13 +14,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import { useNavigate } from "react-router-dom";
 
 import "./RideItem.css";
-
 import { reverseGeoCode } from "../../services/3rdparty";
 import stringAvatar from "../../utility/avatar";
 import { getUsername } from "../../services";
-
+import Chat from "../chat/main";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -35,8 +35,8 @@ const ExpandMore = styled((props) => {
 
 /**
  *
- * * TODO: need much stronger algorithm for querying the city name. now its about REGION so
- * for example asking for Ramat Gan will result in Tel Aviv.
+ * * TODO: need much stronger algorithm for querying the city name. now its about REGION.
+ * * for example asking for Ramat Gan will result in Tel Aviv.
  */
 const getCityName = async (location) => {
   try {
@@ -47,7 +47,6 @@ const getCityName = async (location) => {
   }
 };
 
-
 export default function RideItem({
   location,
   destination,
@@ -55,8 +54,9 @@ export default function RideItem({
   ver,
   body,
   timePublished,
-
   id,
+  driveID,
+  roomID,
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const [cityLoc, setCityLoc] = React.useState("");
@@ -86,6 +86,11 @@ export default function RideItem({
       .catch((error) => console.error(error));
   }, []);
 
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `Chat`;
+    navigate(path, { state: { driveID: driveID } });
+  };
   return (
     <Card
       sx={{
@@ -109,6 +114,9 @@ export default function RideItem({
         <Typography variant="body2" color="text.secondary">
           {header}
         </Typography>
+        <Typography variant="body3" color="primary.main">
+          {roomID}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
@@ -128,7 +136,6 @@ export default function RideItem({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
           <Typography paragraph>{body}</Typography>
         </CardContent>
         <Button
@@ -137,6 +144,7 @@ export default function RideItem({
           size="large"
           variant="contained"
           endIcon={<DirectionsCarIcon />}
+          onClick={routeChange}
         >
           Start
         </Button>

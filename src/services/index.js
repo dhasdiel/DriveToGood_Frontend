@@ -69,3 +69,11 @@ export const GETdrives = (longitude, latitude, skip = 0, limit = 1) => {
     authorize
   );
 };
+
+export const setDriveComplete = (drive_id) => {
+  return axios.post(`${BASEURL}${DRIVE}complete/${drive_id}`);
+};
+
+export const GETisHost = (drive_id, current_user_id) => {
+  return axios.get(`${BASEURL}${DRIVE}is-host/${drive_id}/${current_user_id}`);
+};
