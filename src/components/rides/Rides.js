@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Grid from "@mui/material/Grid";
 import RideItem from "./RideItem";
 import { Box } from "@mui/system";
@@ -33,7 +33,7 @@ const Rides = () => {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>
+    <Box sx={{ flexGrow: 1, justifyContent: "center", display: "flex" }}>{console.log(location)}
       <Grid container rowSpacing={3} sx={{ m: 2 }}>
         {data.map(
           (
