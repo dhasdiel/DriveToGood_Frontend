@@ -16,22 +16,18 @@ const _constructError = (reason) => {
 export const reverseGeoCode = (geoJSON_Point) => {
   // validate with the schema
   const validated = GeoJSON_Point.validate(geoJSON_Point);
-  console.log(validated);
   if (validated.error) {
     return _constructError(validated.error);
   }
 
-  const url = _constructURL(geoJSON_Point, "reverse");
+  // EXPLAIN: The api expect lat long (we need to swap and send)
+  const query = `${geoJSON_Point.coordinates[1]},${geoJSON_Point.coordinates[0]}`;
+  const url = _constructURL(query, "reverse");
   return axios.get(url);
 };
 
-/**
- * 
- * @param {*} query 
- * @returns lon lat obj
- */
 export const forwardGeoCode = (query) => {
-  const validated = schemaQuery.validate(query)
+  const validated = schemaQuery.validate(query);
   if (validated.error) {
     return _constructError(validated.error);
   }

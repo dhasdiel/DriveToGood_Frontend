@@ -47,6 +47,10 @@ export const signIN = (namePass) => {
   return axios.post(BASEURL + USER + "token", formData, config);
 };
 
+export const getUsername = (id) => {
+  return axios.get(BASEURL + USER + id);
+};
+
 /**Drive - End Points:
  * -------------------------------------------------------------------
  */
@@ -64,4 +68,12 @@ export const GETdrives = (longitude, latitude, skip = 0, limit = 1) => {
     `${BASEURL}${DRIVE}drives?longitude=${longitude}&latitude=${latitude}&skip=${skip}&limit=${limit}`,
     authorize
   );
+};
+
+export const setDriveComplete = (drive_id) => {
+  return axios.post(`${BASEURL}${DRIVE}complete/${drive_id}`);
+};
+
+export const GETisHost = (drive_id, current_user_id) => {
+  return axios.get(`${BASEURL}${DRIVE}is-host/${drive_id}/${current_user_id}`);
 };

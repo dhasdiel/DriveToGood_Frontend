@@ -1,7 +1,7 @@
 export const DriveTypes = [
-    "Transporting Patient",
-    "Hospital",
-    "Food Distribution",
-    "Roadside Assistance",
-    "transportation Of Medical Equipment",
+    "transporting_patient",
+    "hospital",
+    "food_distribution",
+    "roadside_assistance",
+    "transportation_of_medical_equipment",
   ];

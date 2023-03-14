@@ -8,27 +8,19 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import { useNavigate } from "react-router-dom";
 
 import "./RideItem.css";
-
-
-
-// const DUNB_RIDES = [
-//   {
-//     id: 1,
-//     from: "Tel-Aviv",
-//     to: "Shiba Hospiatl",
-//     title: "I'll be in the neighbourhood this week. Let's grab a bite to eat",
-//     person: "/static/images/avatar/5.jpg",
-//   },
-// ];
+import { reverseGeoCode } from "../../services/3rdparty";
+import stringAvatar from "../../utility/avatar";
+import { getUsername } from "../../services";
+import Chat from "../chat/main";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -41,24 +33,64 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+/**
+ *
+ * * TODO: need much stronger algorithm for querying the city name. now its about REGION.
+ * * for example asking for Ramat Gan will result in Tel Aviv.
+ */
+const getCityName = async (location) => {
+  try {
+    const { data } = await reverseGeoCode(location);
+    return data.data[0].region;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default function RideItem({
-  time,
-  city,
-  dstCity,
   location,
-  locationTo,
+  destination,
   header,
   ver,
   body,
+  timePublished,
+  id,
+  driveID,
+  roomID,
 }) {
   const [expanded, setExpanded] = React.useState(false);
-
-  React.useEffect(() => {}, []);
+  const [cityLoc, setCityLoc] = React.useState("");
+  const [cityDst, setCityDst] = React.useState("");
+  const [username, setUsername] = React.useState(
+    "If you delete this shit it wont work!!!"
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  React.useEffect(() => {
+    getCityName(location)
+      .then((city) => setCityLoc(city))
+      .catch((error) => console.error(error));
+
+    getCityName(destination)
+      .then((city) => setCityDst(city))
+      .catch((error) => console.error(error));
+  }, []);
+
+  React.useEffect(() => {
+    getUsername(id)
+      .then((response) => response.data)
+      .then((data) => setUsername(data.full_name))
+      .catch((error) => console.error(error));
+  }, []);
+
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `Chat`;
+    navigate(path, { state: { driveID: driveID } });
+  };
   return (
     <Card
       sx={{
@@ -68,29 +100,22 @@ export default function RideItem({
       }}
     >
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        avatar={<Avatar {...stringAvatar(username)} alt="Remy Sharp" />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={`${city} => ${dstCity}`}
-        subheader={time}
+        title={`${cityLoc} => ${cityDst}`}
+        subheader={timePublished}
       />
-      {/* <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      /> */}
       <Divider />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {header}
+        </Typography>
+        <Typography variant="body3" color="primary.main">
+          {roomID}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -111,7 +136,6 @@ export default function RideItem({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
           <Typography paragraph>{body}</Typography>
         </CardContent>
         <Button
@@ -120,6 +144,7 @@ export default function RideItem({
           size="large"
           variant="contained"
           endIcon={<DirectionsCarIcon />}
+          onClick={routeChange}
         >
           Start
         </Button>

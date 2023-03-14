@@ -1,0 +1,25 @@
+{
+    "data": {
+       "results": [
+          {
+             "latitude": 40.763841,
+             "longitude": -73.972972,
+             "label": "Apple Store, Manhattan, New York, NY, USA",   
+             "name": "Apple Store",
+             "type": "venue",
+             "distance": 0,
+             "number": "767",
+             "street": "5th Avenue",
+             "postal_code": "10153",
+             "confidence": 1,
+             "region": "New York",
+             "region_code": "NY",
+             "administrative_area": null,
+             "neighbourhood": "Midtown East",
+             "country": "United States",
+             "country_code": "US",
+             "map_url": "http://map.positionstack.com/40.763841,-73.972972"
+          }
+       ]
+    }
+}
